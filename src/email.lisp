@@ -1,18 +1,31 @@
 (in-package :cl-user)
 (defpackage postmaster.email
   (:use :cl :trivial-types)
-  (:export :<email>
+  (:export :<attachment>
+           :path
+           :name
+           :mime-type
+           :attach
+           :<email>
            :from
            :to
            :subject
            :body
-           :html-body))
+           :html-body
+           :attachments))
 (in-package :postmaster.email)
 
 (defclass <attachment> ()
-  ((name :reader name :initarg :name :type string)
-   (path :reader path :initarg :path :type pathname)
+  ((path :reader path :initarg :path :type pathname)
+   (name :reader name :initarg :name :type string)
    (mime-type :reader mime-type :initarg :mime-type :type string)))
+
+(defun attach (&key path (name (pathname-file path))
+                 (mime-type (mimes:mime path)))
+  (make-instance '<attachment>
+                 :path path
+                 :name name
+                 :mime-type mime-type))
 
 (defclass <email> ()
   ((from :reader from :initarg :from :type string)
