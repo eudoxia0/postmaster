@@ -32,8 +32,8 @@
   "Convert a list of Postmaster attachments to the corresponding CL-SMTP class."
   (mapcar #'(lambda (attachment)
               (cl-smtp:make-attachment (path attachment)
-                                       (name attachment)
-                                       (mime-type attachment)))
+                                       :name (name attachment)
+                                       :mime-type (mime-type attachment)))
           list))
 
 (defclass <email> ()
