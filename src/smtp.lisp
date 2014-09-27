@@ -1,11 +1,11 @@
 (in-package :cl-user)
-(defpackage postmaster.send
+(defpackage postmaster.smtp
   (:use :cl :postmaster.email)
   (:export :<smtp-server>
            :host
            :port
            :ssl))
-(in-package :postmaster.send)
+(in-package :postmaster.smtp)
 
 (defclass <smtp-server> ()
   ((host :reader host :initarg :host :type string)

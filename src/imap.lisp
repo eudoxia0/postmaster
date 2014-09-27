@@ -1,7 +1,7 @@
 (in-package :cl-user)
-(defpackage postmaster.receive
+(defpackage postmaster.imap
   (:use :cl :postmaster.email))
-(in-package :postmaster.receive)
+(in-package :postmaster.imap)
 
 (defclass <imap-server> ()
   ((host :reader host :initarg :host :type string)
