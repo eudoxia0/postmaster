@@ -4,7 +4,9 @@
   (:export :<smtp-server>
            :host
            :port
-           :ssl))
+           :ssl
+           :<smtp-account>
+           :send))
 (in-package :postmaster.smtp)
 
 (defclass <smtp-server> ()
@@ -36,14 +38,19 @@
                         (from email)
                         (to email)
                         (subject email)
-                        (body email)
+                        (when (slot-boundp email 'body)
+                          (body email))
                         :ssl (ssl server)
                         :port (port server)
-                        :html-message (html-body email)
-                        :authentication (if (auth-method account)
+                        :html-message
+                        (when (slot-boundp email 'html-body)
+                          (html-body email))
+                        :authentication (if (and (slot-boundp account 'auth-method)
+                                                 (auth-method account))
                                             (list (auth-method account)
                                                   (username account)
                                                   (password account))
                                             (list (username account)
                                                   (password account)))
-                        :attachments (convert-attachment-list (attachments email)))))
+                        :attachments (when (slot-boundp email 'attachments)
+                                       (convert-attachment-list (attachments email))))))
