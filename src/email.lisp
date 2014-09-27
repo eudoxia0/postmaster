@@ -5,7 +5,6 @@
            :path
            :name
            :mime-type
-           :attach
            :convert-attachment-list
            :<email>
            :from
@@ -21,22 +20,20 @@
    (name :reader name :initarg :name :type string)
    (mime-type :reader mime-type :initarg :mime-type :type string)))
 
-(defun attach (&key path (name (pathname-file path))
-                 (mime-type (mimes:mime path)))
-  (make-instance '<attachment>
-                 :path path
-                 :name name
-                 :mime-type mime-type))
-
-(defmethod convert-attachment ((attachment <attachment>))
-  "Convert a Postmaster attachment to the corresponding CL-SMTP class."
-  (cl-smtp:make-attachment (path attachment)
-                           (name attachment)
-                           (mime-type attachment)))
+(defmethod initialize-instance :after ((attachment <attachment>) &key)
+  (unless (slot-boundp attachment 'name)
+    (setf (slot-value attachment 'name)
+          (pathname-name (path attachment))))
+  (unless (slot-boundp attachment 'mime-type)
+    (setf (slot-value attachment 'mime-type)
+          (mimes:mime (path attachment)))))
 
 (defun convert-attachment-list (list)
-  (mapcar #'(lambda (attach)
-              (convert-attachment attach))
+  "Convert a list of Postmaster attachments to the corresponding CL-SMTP class."
+  (mapcar #'(lambda (attachment)
+              (cl-smtp:make-attachment (path attachment)
+                                       (name attachment)
+                                       (mime-type attachment)))
           list))
 
 (defclass <email> ()
