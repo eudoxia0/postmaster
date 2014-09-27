@@ -1,6 +1,6 @@
 (in-package :cl-user)
 (defpackage postmaster.send
-  (:use :cl :trivial-types)
+  (:use :cl :trivial-types :postmaster.email)
   (:export :<smtp-server>
            :host
            :port
@@ -32,10 +32,26 @@
                (t
                 (error "Unknown SSL preference ~A." (ssl server)))))))
 
-;;; Email sender class
-
 (defclass <email-sender> ()
   ((server :reader server :initarg :server :type <smtp-server>)
    (auth-method :reader auth-method :initarg :auth-method :type (or null keyword))
    (username :reader username :initarg :username :type string)
    (password :reader password :initarg :password :type string)))
+
+(defmethod send ((sender <email-sender>) (email <email>))
+  (let ((server (server sender)))
+    (cl-smtp:send-email (host server)
+                        (from email)
+                        (to email)
+                        (subject email)
+                        (body email)
+                        :ssl (ssl server)
+                        :port (port server)
+                        :html-message (html-body email)
+                        :authentication (if (auth-method sender)
+                                            (list (auth-method-sender)
+                                                  (username sender)
+                                                  (password sender))
+                                            (list (username sender)
+                                                  (password sender)))
+                        :attachments (convert-attachment-list (attachments email)))))
