@@ -14,8 +14,7 @@
         :initform :starttls)))
 
 (defmethod initialize-instance :after ((server <smtp-server>) &key)
-  ;; If the port has not been specified, set it according to the SSL
-  ;; preferences.
+  "If the port has not been specified, set it according to the SSL preferences."
   (unless (slot-boundp server 'port)
     (setf (slot-value server 'port)
           (case (ssl server)
