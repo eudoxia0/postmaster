@@ -1,4 +1,4 @@
-# Postmaster - SMTP/IMAP for humans
+# Postmaster - Email for humans
 
 # Usage
 
