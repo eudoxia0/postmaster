@@ -14,17 +14,20 @@
    (password :reader password :initarg :password :type string)))
 
 (defclass <imap-session> ()
-  ((mailbox :accessor mailbox :initarg :mailbox)))
+  ((folder :accessor folder :initarg :folder)))
 
 (defmethod connect ((profile <imap-account>))
   (let* ((server (server profile))
-         (box (funcall
-               (if (ssl server)
-                        #'mel:make-imaps-folder
-                        #'mel:make-imap-folder)
-               :host (host server)
-               :username (username profile)
-               :password (password profile))))
-    (mel.folders.imap::make-imaps-connection box)
+         (folder (funcall
+                  (if (ssl server)
+                      #'mel:make-imaps-folder
+                      #'mel:make-imap-folder)
+                  :host (host server)
+                  :username (username profile)
+                  :password (password profile))))
+    (mel.folders.imap::make-imaps-connection folder)
     (make-instance '<imap-session>
-                   :mailbox box)))
+                   :folder folder)))
+
+(defmethod disconnect ((session <imap-session>))
+  (mel.folders.imap::close-folder (folder session)))
