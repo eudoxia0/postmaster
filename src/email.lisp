@@ -6,6 +6,7 @@
            :name
            :mime-type
            :attach
+           :convert-attachment-list
            :<email>
            :from
            :to
@@ -26,6 +27,17 @@
                  :path path
                  :name name
                  :mime-type mime-type))
+
+(defmethod convert-attachment ((attachment <attachment>))
+  "Convert a Postmaster attachment to the corresponding CL-SMTP class."
+  (cl-smtp:make-attachment (path attachment)
+                           (name attachment)
+                           (mime-type attachment)))
+
+(defun convert-attachment-list (list)
+  (mapcar #'(lambda (attach)
+              (convert-attachment attach))
+          list))
 
 (defclass <email> ()
   ((from :reader from :initarg :from :type string)
