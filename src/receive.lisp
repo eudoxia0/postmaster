@@ -8,7 +8,7 @@
    (port :reader port :initarg :port :type integer)
    (ssl :reader ssl :initarg :ssl :type boolean :initform t)))
 
-(defclass <email-receiver> ()
+(defclass <imap-account> ()
   ((server :reader server :initarg :server :type <imap-server>)
    (username :reader username :initarg :username :type string)
    (password :reader password :initarg :password :type string)))
@@ -16,7 +16,7 @@
 (defclass <imap-session> ()
   ((mailbox :accessor mailbox :initarg :mailbox)))
 
-(defmethod connect ((profile <email-receiver>))
+(defmethod connect ((profile <imap-account>))
   (let* ((server (server profile))
          (box (funcall
                (if (ssl server)
