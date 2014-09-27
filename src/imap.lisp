@@ -25,5 +25,6 @@
                :host (host server)
                :username (username profile)
                :password (password profile))))
+    (mel.folders.imap::make-imaps-connection box)
     (make-instance '<imap-session>
                    :mailbox box)))
