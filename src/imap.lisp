@@ -1,6 +1,17 @@
 (in-package :cl-user)
 (defpackage postmaster.imap
-  (:use :cl :postmaster.email))
+  (:use :cl :postmaster.email)
+  (:export :<imap-server>
+           :host
+           :port
+           :ssl
+           :<imap-account>
+           :server
+           :username
+           :password
+           :<imap-session>
+           :connect
+           :disconnect))
 (in-package :postmaster.imap)
 
 (defclass <imap-server> ()
