@@ -19,6 +19,13 @@
    (port :reader port :initarg :port :type integer)
    (ssl :reader ssl :initarg :ssl :type boolean :initform t)))
 
+(defmethod initialize-instance :after ((server <imap-server>) &key)
+  (unless (slot-boundp server 'port)
+    (setf (slot-value server 'port)
+          (if (ssl server)
+              993
+              143))))
+
 (defclass <imap-account> ()
   ((server :reader server :initarg :server :type <imap-server>)
    (username :reader username :initarg :username :type string)
