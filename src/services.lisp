@@ -33,12 +33,14 @@
 ;;; Well-known services
 
 (defparameter +well-known-services+
-  (list
-   (make-instance '<service>
-                  :name "GMail"
-                  :domains (list "gmail.com" "googlemail.com")
-                  :smtp-server (make-instance '<smtp-server>
-                                              :host "smtp.gmail.com"
-                                              :ssl :tls)
-                  :imap-server (make-instance '<imap-server>
-                                              :host "imap.gmail.com"))))
+  (let ((table (make-hash-table)))
+    (setf (gethash :gmail table)
+          (make-instance '<service>
+                         :name "GMail"
+                         :domains (list "gmail.com" "googlemail.com")
+                         :smtp-server (make-instance '<smtp-server>
+                                                     :host "smtp.gmail.com"
+                                                     :ssl :tls)
+                         :imap-server (make-instance '<imap-server>
+                                                     :host "imap.gmail.com")))
+    table))
