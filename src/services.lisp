@@ -12,7 +12,8 @@
            :<account>
            :service
            :username
-           :password))
+           :password
+           :find-service-by-name))
 (in-package :postmaster.services)
 
 ;;; Services
@@ -44,3 +45,8 @@
                          :imap-server (make-instance '<imap-server>
                                                      :host "imap.gmail.com")))
     table))
+
+(defun find-service-by-name (name)
+  "Find a service by name (A keyword)."
+  (multiple-value-bind (val foundp) (gethash name +well-known-services+)
+    val))
