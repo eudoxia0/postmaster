@@ -19,7 +19,7 @@ Postmaster is a simple, easy to use SMTP/IMAP library with an API inspired by
 (find-service-by-domain "gmail.com")
 
 ;; Failing that, you can define your own
-(defparameter *s*
+(defparameter *service*
   (make-instance '<service>
                  :name "GMail"
                  :domains (list "gmail.com" "googlemail.com")
@@ -29,6 +29,33 @@ Postmaster is a simple, easy to use SMTP/IMAP library with an API inspired by
 ~~~
 
 Class defaults (SSL, ports) are safe and sane.
+
+## Accounts
+
+Once you have a service, you log in:
+
+~~~lisp
+(in-package :postmaster.services)
+
+(defparameter *account*
+  (make-instance '<account>
+                 :service *service*
+                 :username "me@gmail.com"
+                 :password "A really long, safe dictionary password. Right?"))
+~~~
+
+## Sending Email
+
+~~~lisp
+(defparameter *email*
+  (make-instance 'postmaster.email:<email>
+                 :from "me@gmail.com"
+                 :to "friend@initech.com"
+                 :subject "Why you should rewrite all your startup's code in CL"
+                 :body "Paul Graham. Speed. Macros. CLOS. Done"))
+
+(postmaster.smtp:send *account* *email*)
+~~~
 
 # License
 
