@@ -30,5 +30,4 @@
                                                   (password account))
                                             (list (username account)
                                                   (password account)))
-                        :attachments (when (slot-boundp email 'attachments)
-                                       (convert-attachment-list (attachments email))))))
+                        :attachments (attachments email))))
