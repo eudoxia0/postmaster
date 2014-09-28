@@ -12,11 +12,13 @@
                :trivial-types
                :trivial-mimes)
   :components ((:module "src"
+                :serial t
                 :components
                 ((:file "email")
+                 (:file "servers")
+                 (:file "services")
                  (:file "smtp")
-                 (:file "imap")
-                 (:file "services"))))
+                 (:file "imap"))))
   :description "Email for humans."
   :long-description
   #.(uiop:read-file-string
