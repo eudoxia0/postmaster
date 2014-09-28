@@ -1,6 +1,6 @@
 (in-package :cl-user)
 (defpackage postmaster.services
-  (:use :cl :trivial-types)
+  (:use :cl :trivial-types :anaphora)
   (:import-from :postmaster.servers
                 :<smtp-server>
                 :<imap-server>)
@@ -13,7 +13,8 @@
            :service
            :username
            :password
-           :find-service-by-name))
+           :find-service-by-name
+           :find-service-by-domain))
 (in-package :postmaster.services)
 
 ;;; Services
@@ -49,4 +50,13 @@
 (defun find-service-by-name (name)
   "Find a service by name (A keyword)."
   (multiple-value-bind (val foundp) (gethash name +well-known-services+)
+    ;; We do this so the output doesn't leak the fact that the service DB is a
+    ;; hash table
     val))
+
+(defun find-service-by-domain (domain)
+  "Find a service by its domain name. Case insensitive."
+  (loop for name being the hash-keys of +well-known-services+ do
+    (let ((service (find-service-by-name name)))
+      (if (member domain (domains service) :test #'equalp)
+          (return-from find-service-by-domain service)))))
