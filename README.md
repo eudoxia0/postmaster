@@ -9,6 +9,9 @@ Postmaster is a simple, easy to use SMTP/IMAP library with an API inspired by
 
 ## Services
 
+Postmaster maintains a list of common and well-known services, so you don't have
+to worry about hosts and ports, and can just send email to addresses.
+
 ~~~lisp
 (in-package :postmaster.services)
 
@@ -56,6 +59,16 @@ Once you have a service, you log in:
 
 (postmaster.smtp:send *account* *email*)
 ~~~
+
+# Extensions
+
+## [Postmaster Mock][pmock]
+
+This library provides a mock Email service that stores all messages it gets in
+an internal store. Accounts can be registered to the service and the stored
+emails inspected. This is useful for testing a Postmaster-based application.
+
+[pmock]: https://github.com/eudoxia0/postmaster-mock
 
 # License
 
