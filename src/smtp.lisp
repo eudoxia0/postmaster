@@ -23,9 +23,9 @@
                         :html-message
                         (when (slot-boundp email 'html-body)
                           (html-body email))
-                        :authentication (if (and (slot-boundp account 'auth-method)
-                                                 (auth-method account))
-                                            (list (auth-method account)
+                        :authentication (if (and (slot-boundp server 'auth-method)
+                                                 (auth-method server))
+                                            (list (auth-method server)
                                                   (username account)
                                                   (password account))
                                             (list (username account)

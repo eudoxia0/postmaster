@@ -29,12 +29,12 @@
 
 (defclass <email> ()
   ((from :reader from :initarg :from :type string)
-   (to :reader to :initarg :to :type (or string (list-of string)))
+   (to :reader to :initarg :to :type (or string (proper-list string)))
    (subject :reader subject :initarg :subject :type string)
    (body :reader body :initarg :body :type string)
    (html-body :reader html-body :initarg :html-body :type string)
    (attachments :reader attachments :initarg :attachments :initform nil
-                :type (list-of <attachment>))))
+                :type (proper-list <attachment>))))
 
 (defun convert-attachment-list (list)
   "Convert a list of Postmaster attachments to the corresponding CL-SMTP class."

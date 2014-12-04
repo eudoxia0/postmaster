@@ -21,7 +21,7 @@
 
 (defclass <service> ()
   ((name :reader name :initarg :name :type string)
-   (domains :reader domains :initarg :domains :type (list-of string))
+   (domains :reader domains :initarg :domains :type (proper-list string))
    (smtp-server :reader smtp-server :initarg :smtp-server :type <smtp-server>)
    (imap-server :reader imap-server :initarg :imap-server :type <imap-server>)))
 
