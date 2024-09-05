@@ -28,7 +28,7 @@
 ;;; Accounts
 
 (defclass <account> ()
-  ((service :reader service :initarg :service :type string)
+  ((service :reader service :initarg :service :type <service>)
    (username :reader username :initarg :username :type string)
    (password :reader password :initarg :password :type string)))
 
