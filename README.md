@@ -60,6 +60,28 @@ Once you have a service, you log in:
 (postmaster.smtp:send *account* *email*)
 ~~~
 
+### Additional Options
+
+To further customize the email sent postmaster will allow any valid keys available in https://gitlab.common-lisp.net/cl-smtp/cl-smtp.
+
+Note that anything specified in the email account or message cannot be overridden.
+
+```common-lisp
+(send-email host from to subject message
+            &key ssl (port (if (eq :tls ssl) 465 25))
+            cc bcc reply-to extra-headers
+            html-message display-name authentication
+            attachments (buffer-size 256) envelope-sender
+            (external-format :utf-8) local-hostname)
+
+```
+
+For example to have a different reply-to address, add the  key to the send method:
+
+```common-lisp
+(postmaster.smtp:send *account* *email* :reply-to "myotheremail@gmail.com")
+```
+
 # Extensions
 
 ## [Postmaster Mock][pmock]
